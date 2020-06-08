@@ -18,12 +18,14 @@ void CLLocationHandler(NSString* method, id rawArgs, FlutterResult methodResult)
         
         CLLocation *location = (CLLocation *) HEAP[refId];
         
-        CLLocationCoordinate2D data = location.coordinate;
-        
-        NSValue *dataValue = [NSValue value:&data withObjCType:@encode(CLLocationCoordinate2D)];
-        HEAP[@(dataValue.hash)] = dataValue;
-        
-        methodResult(@(dataValue.hash));
+        if ([location isKindOfClass:[CLLocation class]]) {
+            CLLocationCoordinate2D data = location.coordinate;
+            
+            NSValue *dataValue = [NSValue value:&data withObjCType:@encode(CLLocationCoordinate2D)];
+            HEAP[@(dataValue.hash)] = dataValue;
+            
+            methodResult(@(dataValue.hash));
+        }
     }
     // CLLocation获取altitude
     else if ([@"CLLocation::get_altitude" isEqualToString:method]) {
